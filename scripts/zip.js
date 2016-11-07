@@ -7,13 +7,23 @@
     $.getJSON('/data/manhattan.json', function(data) {
       // TODO: start here!
       zipProps=data.features.map(function(feat,idx){
+        var newAddress;
+        if(feat.properties.address){
+          newAddress = feat.properties.address;
+        }else{
+          newAddress= null;
+        }
 
-        var newArray=[];
-        $.each(feat.properties, function(key,val){
-          newArray.push(val);
-        });
-        return newArray;
-      });
+        return {
+          zip: feat.properties.zip,
+          neighborhood: feat.properties.neighborhood,
+          address: newAddress,
+          coordinates: {
+            lat: feat.geometry.coordinates[1],
+            lng: feat.geometry.coordinates[0]
+          }
+          }
+      })
 
        console.log(zipProps);
     });
